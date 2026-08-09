@@ -5,13 +5,14 @@ import { usePathname } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 import { cn } from '@/lib/utils'
+import { LayoutDashboard, Users, FlaskConical, TestTube2, Settings, LogOut } from 'lucide-react'
 
 const navItems = [
-  { href: '/admin/dashboard', label: 'Dashboard', icon: '📊' },
-  { href: '/admin/clients', label: 'Clientes', icon: '👥' },
-  { href: '/admin/analyses/new', label: 'Nova Análise', icon: '🔬' },
-  { href: '/admin/parameters', label: 'Parâmetros', icon: '⚗️' },
-  { href: '/admin/settings', label: 'Configurações', icon: '⚙️' },
+  { href: '/admin/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+  { href: '/admin/clients', label: 'Clientes', icon: Users },
+  { href: '/admin/analyses/new', label: 'Nova Análise', icon: FlaskConical },
+  { href: '/admin/parameters', label: 'Parâmetros', icon: TestTube2 },
+  { href: '/admin/settings', label: 'Configurações', icon: Settings },
 ]
 
 export function AdminSidebar() {
@@ -43,7 +44,7 @@ export function AdminSidebar() {
                 : 'text-ocean-200 hover:bg-ocean-800 hover:text-white'
             )}
           >
-            <span>{item.icon}</span>
+            <item.icon className="h-4 w-4" aria-hidden="true" />
             {item.label}
           </Link>
         ))}
@@ -54,7 +55,7 @@ export function AdminSidebar() {
           onClick={handleLogout}
           className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-ocean-200 hover:bg-ocean-800 hover:text-white transition-colors"
         >
-          <span>🚪</span> Sair
+          <LogOut className="h-4 w-4" aria-hidden="true" /> Sair
         </button>
       </div>
     </aside>

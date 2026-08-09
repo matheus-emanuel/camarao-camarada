@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { FileDown, Loader2 } from 'lucide-react'
 import { generatePdf } from '@/lib/pdf/generate'
 
 interface PdfDownloadButtonProps {
@@ -40,10 +41,12 @@ export function PdfDownloadButton({
       >
         {loading ? (
           <>
-            <span className="animate-spin">⏳</span> Gerando...
+            <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" /> Gerando...
           </>
         ) : (
-          <>📄 {label}</>
+          <>
+            <FileDown className="h-4 w-4" aria-hidden="true" /> {label}
+          </>
         )}
       </button>
       {error && <p className="text-xs text-red-600 mt-1">{error}</p>}

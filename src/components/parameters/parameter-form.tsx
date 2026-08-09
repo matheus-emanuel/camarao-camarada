@@ -144,11 +144,17 @@ export function ParameterForm({ defaultValues = {}, onSuccess, submitLabel = 'Sa
         </div>
 
         <div className="sm:col-span-2">
-          <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">Descrição</label>
+          <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
+            Orientação para o cliente
+          </label>
+          <p className="text-xs text-gray-500 mb-1">
+            Exibida ao fazendeiro quando este parâmetro aparecer em alerta. Explique o que o resultado significa e o que fazer a respeito, em linguagem simples.
+          </p>
           <textarea
             id="description"
             defaultValue={defaultValues.description ?? ''}
             rows={2}
+            placeholder="Ex.: Oxigênio baixo pode causar estresse e mortalidade. Ligue os aeradores e reduza a ração."
             className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-ocean-500 resize-none"
           />
         </div>

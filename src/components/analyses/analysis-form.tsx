@@ -2,25 +2,53 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { CheckCircle2 } from 'lucide-react'
 import { formatDate } from '@/lib/utils'
+import { toast } from '@/components/ui/use-toast'
 import type { Parameter, Pond } from '@/types/app'
+
+interface AnalysisFormDefaults {
+  pond_id: string
+  collected_at: string
+  analyzed_at?: string | null
+  technician?: string | null
+  notes?: string | null
+  results: { parameter_id: string; value: number | null; value_text: string | null }[]
+}
 
 interface AnalysisFormProps {
   ponds: (Pond & { farms: { id: string; name: string; clients: { company_name: string | null; email: string } } })[]
   parameters: Parameter[]
+  analysisId?: string
+  defaultValues?: AnalysisFormDefaults
 }
 
-export function AnalysisForm({ ponds, parameters }: AnalysisFormProps) {
+function toLocalInput(iso: string) {
+  const d = new Date(iso)
+  d.setMinutes(d.getMinutes() - d.getTimezoneOffset())
+  return d.toISOString().slice(0, 16)
+}
+
+export function AnalysisForm({ ponds, parameters, analysisId, defaultValues }: AnalysisFormProps) {
   const router = useRouter()
+  const isEditing = !!analysisId
   const [step, setStep] = useState(1)
-  const [selectedPondId, setSelectedPondId] = useState('')
+  const [selectedPondId, setSelectedPondId] = useState(defaultValues?.pond_id ?? '')
   const [collectedAt, setCollectedAt] = useState(
-    new Date().toISOString().slice(0, 16)
+    defaultValues ? toLocalInput(defaultValues.collected_at) : new Date().toISOString().slice(0, 16)
   )
-  const [analyzedAt, setAnalyzedAt] = useState('')
-  const [technician, setTechnician] = useState('')
-  const [notes, setNotes] = useState('')
-  const [values, setValues] = useState<Record<string, string>>({})
+  const [analyzedAt, setAnalyzedAt] = useState(
+    defaultValues?.analyzed_at ? toLocalInput(defaultValues.analyzed_at) : ''
+  )
+  const [technician, setTechnician] = useState(defaultValues?.technician ?? '')
+  const [notes, setNotes] = useState(defaultValues?.notes ?? '')
+  const [values, setValues] = useState<Record<string, string>>(() => {
+    const initial: Record<string, string> = {}
+    for (const r of defaultValues?.results ?? []) {
+      initial[r.parameter_id] = r.value !== null ? String(r.value) : r.value_text ?? ''
+    }
+    return initial
+  })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
@@ -46,27 +74,38 @@ export function AnalysisForm({ ponds, parameters }: AnalysisFormProps) {
         value_text: isNaN(parseFloat(values[p.id])) ? values[p.id] : null,
       }))
 
-    const res = await fetch('/api/analyses', {
-      method: 'POST',
+    const url = isEditing ? `/api/analyses/${analysisId}` : '/api/analyses'
+    const method = isEditing ? 'PATCH' : 'POST'
+    const payload: Record<string, unknown> = {
+      collected_at: new Date(collectedAt).toISOString(),
+      analyzed_at: analyzedAt ? new Date(analyzedAt).toISOString() : null,
+      technician: technician || null,
+      notes: notes || null,
+      results,
+    }
+    if (!isEditing) payload.pond_id = selectedPondId
+
+    const res = await fetch(url, {
+      method,
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        pond_id: selectedPondId,
-        collected_at: new Date(collectedAt).toISOString(),
-        analyzed_at: analyzedAt ? new Date(analyzedAt).toISOString() : null,
-        technician: technician || null,
-        notes: notes || null,
-        results,
-      }),
+      body: JSON.stringify(payload),
     })
 
     if (!res.ok) {
       const body = await res.json()
-      setError(body.error ?? 'Erro ao registrar análise.')
+      setError(body.error ?? 'Erro ao salvar análise.')
       setLoading(false)
       return
     }
 
     const { analysis } = await res.json()
+    toast({
+      variant: 'success',
+      title: isEditing ? 'Análise atualizada' : 'Análise registrada',
+      description: isEditing
+        ? 'Os resultados foram corrigidos com sucesso.'
+        : 'Os resultados foram salvos e o cliente será notificado se houver alertas.',
+    })
     router.push(`/admin/analyses/${analysis.id}`)
     router.refresh()
   }
@@ -115,7 +154,8 @@ export function AnalysisForm({ ponds, parameters }: AnalysisFormProps) {
               value={selectedPondId}
               onChange={(e) => setSelectedPondId(e.target.value)}
               required
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-ocean-500 bg-white"
+              disabled={isEditing}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-ocean-500 bg-white disabled:bg-gray-50 disabled:text-gray-500"
             >
               <option value="">Selecionar viveiro</option>
               {ponds.map((p) => (
@@ -232,9 +272,16 @@ export function AnalysisForm({ ponds, parameters }: AnalysisFormProps) {
             <button
               onClick={handleSubmit}
               disabled={loading}
-              className="px-6 py-2.5 bg-ocean-600 hover:bg-ocean-700 disabled:opacity-60 text-white text-sm font-medium rounded-lg transition-colors"
+              className="inline-flex items-center gap-2 px-6 py-2.5 bg-ocean-600 hover:bg-ocean-700 disabled:opacity-60 text-white text-sm font-medium rounded-lg transition-colors"
             >
-              {loading ? 'Registrando...' : '✓ Registrar análise'}
+              {loading ? (
+                isEditing ? 'Salvando...' : 'Registrando...'
+              ) : (
+                <>
+                  <CheckCircle2 className="h-4 w-4" aria-hidden="true" />
+                  {isEditing ? 'Salvar alterações' : 'Registrar análise'}
+                </>
+              )}
             </button>
           </div>
         </div>

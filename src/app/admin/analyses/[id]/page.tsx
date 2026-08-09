@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
+import { Pencil } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
 import { PageHeader } from '@/components/shared/page-header'
 import { AlertBadge } from '@/components/shared/alert-badge'
@@ -61,6 +62,12 @@ export default async function AdminAnalysisDetailPage({ params }: { params: { id
         actions={
           <div className="flex gap-2 items-center">
             <AlertBadge hasAlerts={analysis.has_alerts} alertCount={alertCount} />
+            <Link
+              href={`/admin/analyses/${params.id}/edit`}
+              className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+            >
+              <Pencil className="h-4 w-4" aria-hidden="true" /> Editar análise
+            </Link>
             <PdfDownloadButton
               elementId="pdf-content"
               filename={`analise-${params.id.slice(0, 8)}.pdf`}

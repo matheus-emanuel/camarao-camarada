@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { toast } from '@/components/ui/use-toast'
 import type { Pond } from '@/types/app'
 
 const systemTypes = [
@@ -54,6 +55,11 @@ export function PondForm({ farmId, defaultValues = {}, submitLabel = 'Salvar viv
       return
     }
 
+    toast({
+      variant: 'success',
+      title: isEditing ? 'Viveiro atualizado' : 'Viveiro cadastrado',
+      description: 'As alterações foram salvas.',
+    })
     router.back()
     router.refresh()
   }

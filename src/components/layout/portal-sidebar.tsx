@@ -5,11 +5,12 @@ import { usePathname } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 import { cn } from '@/lib/utils'
+import { LayoutDashboard, Sprout, LineChart, LogOut } from 'lucide-react'
 
 const navItems = [
-  { href: '/portal/dashboard', label: 'Dashboard', icon: '📊' },
-  { href: '/portal/farms', label: 'Minhas Fazendas', icon: '🌾' },
-  { href: '/portal/compare', label: 'Comparar Análises', icon: '📈' },
+  { href: '/portal/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+  { href: '/portal/farms', label: 'Minhas Fazendas', icon: Sprout },
+  { href: '/portal/compare', label: 'Comparar Análises', icon: LineChart },
 ]
 
 export function PortalSidebar() {
@@ -41,7 +42,7 @@ export function PortalSidebar() {
                 : 'text-ocean-200 hover:bg-ocean-800 hover:text-white'
             )}
           >
-            <span>{item.icon}</span>
+            <item.icon className="h-4 w-4" aria-hidden="true" />
             {item.label}
           </Link>
         ))}
@@ -52,7 +53,7 @@ export function PortalSidebar() {
           onClick={handleLogout}
           className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-ocean-200 hover:bg-ocean-800 hover:text-white transition-colors"
         >
-          <span>🚪</span> Sair
+          <LogOut className="h-4 w-4" aria-hidden="true" /> Sair
         </button>
       </div>
     </aside>

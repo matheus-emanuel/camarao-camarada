@@ -1,3 +1,5 @@
+import { CheckCircle2, TriangleAlert } from 'lucide-react'
+import { Badge } from '@/components/ui/badge'
 import { cn } from '@/lib/utils'
 
 interface AlertBadgeProps {
@@ -9,21 +11,24 @@ interface AlertBadgeProps {
 export function AlertBadge({ hasAlerts, alertCount = 0, className }: AlertBadgeProps) {
   if (!hasAlerts) {
     return (
-      <span className={cn('inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 border border-green-200', className)}>
-        ✓ Normal
-      </span>
+      <Badge variant="success" className={cn(className)}>
+        <CheckCircle2 className="h-3.5 w-3.5" aria-hidden="true" />
+        Normal
+      </Badge>
     )
   }
   if (alertCount >= 3) {
     return (
-      <span className={cn('inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 border border-red-200', className)}>
-        ⚠ {alertCount} alertas
-      </span>
+      <Badge variant="critical" className={cn(className)}>
+        <TriangleAlert className="h-3.5 w-3.5" aria-hidden="true" />
+        {alertCount} alertas
+      </Badge>
     )
   }
   return (
-    <span className={cn('inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 border border-yellow-200', className)}>
-      ⚠ {alertCount} alerta{alertCount > 1 ? 's' : ''}
-    </span>
+    <Badge variant="warning" className={cn(className)}>
+      <TriangleAlert className="h-3.5 w-3.5" aria-hidden="true" />
+      {alertCount} alerta{alertCount > 1 ? 's' : ''}
+    </Badge>
   )
 }

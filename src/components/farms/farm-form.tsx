@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { toast } from '@/components/ui/use-toast'
 import type { Farm } from '@/types/app'
 
 interface FarmFormProps {
@@ -47,6 +48,11 @@ export function FarmForm({ clientId, defaultValues = {}, submitLabel = 'Salvar f
       return
     }
 
+    toast({
+      variant: 'success',
+      title: isEditing ? 'Fazenda atualizada' : 'Fazenda cadastrada',
+      description: 'As alterações foram salvas.',
+    })
     router.back()
     router.refresh()
   }

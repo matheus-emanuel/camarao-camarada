@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { toast } from '@/components/ui/use-toast'
 import type { Client } from '@/types/app'
 
 interface ClientFormProps {
@@ -47,6 +48,11 @@ export function ClientForm({ defaultValues = {}, submitLabel = 'Salvar cliente' 
       return
     }
 
+    toast({
+      variant: 'success',
+      title: isEditing ? 'Cliente atualizado' : 'Cliente cadastrado',
+      description: isEditing ? 'As alterações foram salvas.' : 'O convite de acesso será enviado por e-mail.',
+    })
     router.push('/admin/clients')
     router.refresh()
   }
