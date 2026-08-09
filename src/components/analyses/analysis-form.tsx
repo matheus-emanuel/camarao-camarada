@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { CheckCircle2 } from 'lucide-react'
-import { formatDate } from '@/lib/utils'
+import { cn, formatDate } from '@/lib/utils'
 import { toast } from '@/components/ui/use-toast'
 import type { Parameter, Pond } from '@/types/app'
 
@@ -21,6 +21,14 @@ interface AnalysisFormProps {
   parameters: Parameter[]
   analysisId?: string
   defaultValues?: AnalysisFormDefaults
+}
+
+function isOutOfRange(param: Parameter, rawValue: string): boolean {
+  const value = parseFloat(rawValue)
+  if (rawValue === '' || isNaN(value)) return false
+  const belowMin = param.ref_min !== null && value < param.ref_min
+  const aboveMax = param.ref_max !== null && value > param.ref_max
+  return belowMin || aboveMax
 }
 
 function toLocalInput(iso: string) {
@@ -236,24 +244,35 @@ export function AnalysisForm({ ponds, parameters, analysisId, defaultValues }: A
                 {categoryLabels[cat] ?? cat}
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                {params.map((p) => (
-                  <div key={p.id}>
-                    <label className="block text-xs font-medium text-gray-600 mb-1">
-                      {p.name}
-                      {p.unit && <span className="text-gray-400 ml-1">({p.unit})</span>}
-                    </label>
-                    <input
-                      type="text"
-                      inputMode="decimal"
-                      value={values[p.id] ?? ''}
-                      onChange={(e) => handleValueChange(p.id, e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-ocean-500 font-mono"
-                      placeholder={p.ref_min !== null || p.ref_max !== null
-                        ? `ref: ${p.ref_min ?? '—'} – ${p.ref_max ?? '—'}`
-                        : ''}
-                    />
-                  </div>
-                ))}
+                {params.map((p) => {
+                  const outOfRange = isOutOfRange(p, values[p.id] ?? '')
+                  return (
+                    <div key={p.id}>
+                      <label className="block text-xs font-medium text-gray-600 mb-1">
+                        {p.name}
+                        {p.unit && <span className="text-gray-400 ml-1">({p.unit})</span>}
+                      </label>
+                      <input
+                        type="text"
+                        inputMode="decimal"
+                        value={values[p.id] ?? ''}
+                        onChange={(e) => handleValueChange(p.id, e.target.value)}
+                        className={cn(
+                          'w-full px-3 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 font-mono',
+                          outOfRange
+                            ? 'border-red-400 bg-red-50 focus:ring-red-400'
+                            : 'border-gray-300 focus:ring-ocean-500'
+                        )}
+                        placeholder={p.ref_min !== null || p.ref_max !== null
+                          ? `ref: ${p.ref_min ?? '—'} – ${p.ref_max ?? '—'}`
+                          : ''}
+                      />
+                      {outOfRange && (
+                        <p className="text-xs text-red-600 mt-1">Fora da faixa de referência</p>
+                      )}
+                    </div>
+                  )
+                })}
               </div>
             </div>
           ))}

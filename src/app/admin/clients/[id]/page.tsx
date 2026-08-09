@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import { PageHeader } from '@/components/shared/page-header'
 import { FarmForm } from '@/components/farms/farm-form'
+import { Badge } from '@/components/ui/badge'
 import { formatDate } from '@/lib/utils'
 
 export default async function ClientDetailPage({ params }: { params: { id: string } }) {
@@ -80,9 +81,9 @@ export default async function ClientDetailPage({ params }: { params: { id: strin
               <div>
                 <dt className="text-xs text-gray-500">Acesso ao portal</dt>
                 <dd>
-                  <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${client.user_id ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}`}>
+                  <Badge variant={client.user_id ? 'success' : 'warning'}>
                     {client.user_id ? 'Ativo' : 'Convite pendente'}
-                  </span>
+                  </Badge>
                 </dd>
               </div>
             </dl>

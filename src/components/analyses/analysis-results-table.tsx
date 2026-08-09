@@ -1,6 +1,7 @@
 import { CheckCircle2, Lightbulb, TriangleAlert } from 'lucide-react'
 import { cn, formatValue, categoryLabel } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
+import { ParameterInfoToggle } from './parameter-info-toggle'
 import type { AnalysisResult, Parameter } from '@/types/app'
 
 interface ResultRow extends AnalysisResult {
@@ -32,6 +33,13 @@ function StatusPill({ isAlert }: { isAlert: boolean }) {
       OK
     </Badge>
   )
+}
+
+function ParameterName({ row }: { row: ResultRow }) {
+  if (row.is_alert || !row.parameters.description) {
+    return <span>{row.parameters.name}</span>
+  }
+  return <ParameterInfoToggle name={row.parameters.name} description={row.parameters.description} />
 }
 
 function GuidanceCallout({ row }: { row: ResultRow }) {
@@ -94,7 +102,7 @@ export function AnalysisResultsTable({ results }: AnalysisResultsTableProps) {
                       className={cn('transition-colors', r.is_alert ? 'bg-red-50 hover:bg-red-100' : 'hover:bg-gray-50')}
                     >
                       <td className="px-4 py-3 text-sm text-gray-800 font-medium align-top">
-                        {r.parameters.name}
+                        <ParameterName row={r} />
                         {r.is_alert && <GuidanceCallout row={r} />}
                       </td>
                       <td className={cn('px-4 py-3 text-sm text-right font-mono align-top', r.is_alert ? 'text-red-700 font-bold' : 'text-gray-700')}>
@@ -134,7 +142,9 @@ export function AnalysisResultsTable({ results }: AnalysisResultsTableProps) {
                   >
                     <div className="flex items-start justify-between gap-3">
                       <div>
-                        <p className="text-sm font-medium text-gray-800">{r.parameters.name}</p>
+                        <p className="text-sm font-medium text-gray-800">
+                          <ParameterName row={r} />
+                        </p>
                         <p className="text-xs text-gray-500 mt-0.5">Referência: {refLabel(r.parameters)}</p>
                       </div>
                       <StatusPill isAlert={r.is_alert} />

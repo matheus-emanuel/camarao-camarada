@@ -65,7 +65,7 @@ export default async function PortalFarmDetailPage({ params }: { params: { id: s
                 <p className="text-xs text-gray-400 mt-2">
                   {analyses.length > 0
                     ? `${analyses.length} análise${analyses.length !== 1 ? 's' : ''} · Última: ${formatDate(lastAnalysis.collected_at)}`
-                    : 'Sem análises'}
+                    : 'Sem análises ainda — aguardando a primeira coleta do laboratório'}
                 </p>
               </div>
             </Link>
@@ -75,7 +75,8 @@ export default async function PortalFarmDetailPage({ params }: { params: { id: s
 
       {ponds.length === 0 && (
         <div className="text-center py-16 text-gray-400">
-          <p className="text-sm">Nenhum viveiro nesta fazenda.</p>
+          <p className="text-sm">Nenhum viveiro nesta fazenda ainda.</p>
+          <p className="text-xs text-gray-400 mt-1">O laboratório cadastra os viveiros conforme a fazenda é configurada.</p>
         </div>
       )}
     </div>

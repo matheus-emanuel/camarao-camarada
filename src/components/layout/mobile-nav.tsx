@@ -51,8 +51,8 @@ export function MobileNav({ role }: MobileNavProps) {
   }
 
   return (
-    <>
-      <header className="bg-ocean-900 text-white px-4 py-3 flex items-center justify-between">
+    <div className="relative z-40 flex flex-col">
+      <header className="relative bg-ocean-900 text-white px-4 py-3 flex items-center justify-between">
         <div className="font-bold text-lg">🦐 Camarão Camarada</div>
         <button
           onClick={() => setOpen(!open)}
@@ -64,12 +64,12 @@ export function MobileNav({ role }: MobileNavProps) {
       </header>
 
       {open && (
-        <div className="fixed inset-0 z-40 flex flex-col" style={{ top: '52px' }}>
+        <>
           <div
-            className="absolute inset-0 bg-black/50"
+            className="fixed inset-0 z-30 bg-black/50"
             onClick={() => setOpen(false)}
           />
-          <nav className="relative bg-ocean-900 text-white w-full p-4 space-y-1">
+          <nav className="relative z-40 bg-ocean-900 text-white w-full p-4 space-y-1 max-h-[calc(100vh-3rem)] overflow-y-auto">
             {items.map((item) => (
               <Link
                 key={item.href}
@@ -93,8 +93,8 @@ export function MobileNav({ role }: MobileNavProps) {
               <LogOut className="h-4 w-4" aria-hidden="true" /> Sair
             </button>
           </nav>
-        </div>
+        </>
       )}
-    </>
+    </div>
   )
 }

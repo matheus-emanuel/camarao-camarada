@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { PageHeader } from '@/components/shared/page-header'
+import { PageSkeleton } from '@/components/shared/page-skeleton'
 import { AnalysisTable } from '@/components/analyses/analysis-table'
 import { ParameterChart } from '@/components/charts/parameter-chart'
 import type { Analysis, Parameter, ChartDataPoint } from '@/types/app'
@@ -53,7 +54,18 @@ export default function PortalPondPage({ params }: { params: { id: string } }) {
           .eq('active', true)
           .order('display_order')
         setParameters(params_ ?? [])
-        if (params_?.length) setSelectedParamId(params_[0].id)
+
+        const mostRecentAnalysisId = withCount[0].id
+        const { data: alerted } = await supabase
+          .from('analysis_results')
+          .select('parameter_id, parameters!inner(display_order)')
+          .eq('analysis_id', mostRecentAnalysisId)
+          .eq('is_alert', true)
+          .order('display_order', { foreignTable: 'parameters', ascending: true })
+          .limit(1)
+
+        const defaultParamId = alerted?.[0]?.parameter_id ?? params_?.[0]?.id
+        if (defaultParamId) setSelectedParamId(defaultParamId)
       }
 
       setLoading(false)
@@ -90,7 +102,7 @@ export default function PortalPondPage({ params }: { params: { id: string } }) {
   }, [selectedParamId, analyses])
 
   if (loading) {
-    return <div className="flex items-center justify-center h-40 text-gray-400 text-sm">Carregando...</div>
+    return <PageSkeleton variant="detail" />
   }
 
   const selectedParam = parameters.find((p) => p.id === selectedParamId)

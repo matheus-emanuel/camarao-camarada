@@ -105,6 +105,7 @@ export default async function PortalDashboardPage() {
         <div className="text-center py-16 text-gray-400">
           <p className="text-4xl mb-3">🌊</p>
           <p className="text-sm">Aguardando as primeiras análises do laboratório.</p>
+          <p className="text-xs text-gray-400 mt-1">O laboratório costuma registrar novas análises periodicamente — volte em alguns dias.</p>
         </div>
       )}
     </div>

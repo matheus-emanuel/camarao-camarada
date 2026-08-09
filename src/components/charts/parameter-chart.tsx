@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import {
   LineChart,
   Line,
@@ -14,6 +15,20 @@ import {
 import { format, parseISO } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import type { ChartDataPoint } from '@/types/app'
+
+function useIsNarrowViewport(breakpointPx = 400) {
+  const [narrow, setNarrow] = useState(false)
+
+  useEffect(() => {
+    const mq = window.matchMedia(`(max-width: ${breakpointPx}px)`)
+    setNarrow(mq.matches)
+    const handler = (e: MediaQueryListEvent) => setNarrow(e.matches)
+    mq.addEventListener('change', handler)
+    return () => mq.removeEventListener('change', handler)
+  }, [breakpointPx])
+
+  return narrow
+}
 
 interface ParameterChartProps {
   data: ChartDataPoint[]
@@ -44,6 +59,7 @@ function AlertDot({ cx, cy, payload }: DotProps) {
 }
 
 export function ParameterChart({ data, parameterName, unit, refMin, refMax }: ParameterChartProps) {
+  const narrow = useIsNarrowViewport()
   const formatted = data.map((d) => ({
     date: format(parseISO(d.collected_at), 'dd/MM', { locale: ptBR }),
     value: d.value,
@@ -62,9 +78,9 @@ export function ParameterChart({ data, parameterName, unit, refMin, refMax }: Pa
           <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
           <XAxis dataKey="date" tick={{ fontSize: 11 }} />
           <YAxis
-            tick={{ fontSize: 11 }}
+            tick={{ fontSize: narrow ? 10 : 11 }}
             tickFormatter={(v) => (unit ? `${v}` : v)}
-            width={50}
+            width={narrow ? 32 : 50}
           />
           <Tooltip
             formatter={(value: number) => [`${value}${unit ? ` ${unit}` : ''}`, parameterName]}

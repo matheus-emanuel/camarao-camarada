@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { PageHeader } from '@/components/shared/page-header'
 import { ParameterForm } from '@/components/parameters/parameter-form'
+import { Badge } from '@/components/ui/badge'
 import { categoryLabel } from '@/lib/utils'
 
 export default async function ParametersPage() {
@@ -47,9 +48,7 @@ export default async function ParametersPage() {
                         <td className="px-4 py-3 text-sm text-gray-600 text-center font-mono">{p.ref_min ?? '—'}</td>
                         <td className="px-4 py-3 text-sm text-gray-600 text-center font-mono">{p.ref_max ?? '—'}</td>
                         <td className="px-4 py-3 text-center">
-                          <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${p.active ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'}`}>
-                            {p.active ? 'Ativo' : 'Inativo'}
-                          </span>
+                          <Badge variant={p.active ? 'success' : 'outline'}>{p.active ? 'Ativo' : 'Inativo'}</Badge>
                         </td>
                       </tr>
                     ))}

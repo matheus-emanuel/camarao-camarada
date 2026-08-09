@@ -41,16 +41,16 @@ export default async function AdminDashboardPage() {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
         <div className="bg-white rounded-xl border border-gray-200 p-5">
           <p className="text-sm text-gray-500">Clientes ativos</p>
-          <p className="text-3xl font-bold text-ocean-700 mt-1">{clientCount ?? 0}</p>
+          <p className="text-stat text-ocean-700 mt-1">{clientCount ?? 0}</p>
           <Link href="/admin/clients" className="text-xs text-ocean-600 hover:underline mt-2 inline-block">Ver todos →</Link>
         </div>
         <div className="bg-white rounded-xl border border-gray-200 p-5">
           <p className="text-sm text-gray-500">Viveiros ativos</p>
-          <p className="text-3xl font-bold text-ocean-700 mt-1">{pondCount ?? 0}</p>
+          <p className="text-stat text-ocean-700 mt-1">{pondCount ?? 0}</p>
         </div>
         <div className="bg-white rounded-xl border border-red-200 p-5">
           <p className="text-sm text-gray-500">Alertas (últimas 10 análises)</p>
-          <p className={`text-3xl font-bold mt-1 ${alertCount > 0 ? 'text-red-600' : 'text-seagreen-600'}`}>
+          <p className={`text-stat mt-1 ${alertCount > 0 ? 'text-red-600' : 'text-seagreen-600'}`}>
             {alertCount}
           </p>
         </div>

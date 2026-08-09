@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import { PageHeader } from '@/components/shared/page-header'
+import { Badge } from '@/components/ui/badge'
 import { formatDate } from '@/lib/utils'
 
 export default async function AdminClientsPage() {
@@ -57,17 +58,9 @@ export default async function AdminClientsPage() {
                     {formatDate(c.created_at)}
                   </td>
                   <td className="px-4 py-3 text-center">
-                    <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
-                      c.active
-                        ? 'bg-green-100 text-green-700'
-                        : 'bg-gray-100 text-gray-500'
-                    }`}>
-                      {c.active ? 'Ativo' : 'Inativo'}
-                    </span>
+                    <Badge variant={c.active ? 'success' : 'outline'}>{c.active ? 'Ativo' : 'Inativo'}</Badge>
                     {!c.user_id && (
-                      <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-700 ml-1">
-                        Pendente
-                      </span>
+                      <Badge variant="warning" className="ml-1">Pendente</Badge>
                     )}
                   </td>
                   <td className="px-4 py-3 text-right">
