@@ -46,7 +46,7 @@ export default async function PortalAnalysisDetailPage({ params }: { params: { i
           { label: 'Análise' },
         ]}
         actions={
-          <div className="flex gap-2 items-center">
+          <div className="flex flex-wrap gap-2 items-center">
             <AlertBadge hasAlerts={analysis.has_alerts} alertCount={alertCount} />
             <PdfDownloadButton
               elementId="pdf-content"

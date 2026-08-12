@@ -228,7 +228,7 @@ export function AnalysisForm({ ponds, parameters, analysisId, defaultValues }: A
               setError('')
               setStep(2)
             }}
-            className="px-6 py-2.5 bg-ocean-600 hover:bg-ocean-700 text-white text-sm font-medium rounded-lg transition-colors"
+            className="w-full sm:w-auto px-6 py-2.5 bg-ocean-600 hover:bg-ocean-700 text-white text-sm font-medium rounded-lg transition-colors"
           >
             Próximo → Inserir parâmetros
           </button>
@@ -281,17 +281,17 @@ export function AnalysisForm({ ponds, parameters, analysisId, defaultValues }: A
             <div className="bg-red-50 text-red-700 text-sm px-3 py-2 rounded-lg">{error}</div>
           )}
 
-          <div className="flex gap-3 pt-2">
+          <div className="flex flex-col sm:flex-row gap-3 pt-2">
             <button
               onClick={() => { setStep(1); setError('') }}
-              className="px-6 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-medium rounded-lg transition-colors"
+              className="w-full sm:w-auto px-6 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-medium rounded-lg transition-colors"
             >
               ← Voltar
             </button>
             <button
               onClick={handleSubmit}
               disabled={loading}
-              className="inline-flex items-center gap-2 px-6 py-2.5 bg-ocean-600 hover:bg-ocean-700 disabled:opacity-60 text-white text-sm font-medium rounded-lg transition-colors"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-2.5 bg-ocean-600 hover:bg-ocean-700 disabled:opacity-60 text-white text-sm font-medium rounded-lg transition-colors"
             >
               {loading ? (
                 isEditing ? 'Salvando...' : 'Registrando...'

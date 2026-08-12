@@ -18,9 +18,9 @@ export function InviteEmail({ clientName, inviteUrl }: InviteEmailProps) {
   return (
     <Html>
       <Head />
-      <Body style={{ fontFamily: 'Inter, Arial, sans-serif', background: '#f0f9ff', margin: 0, padding: 0 }}>
+      <Body style={{ fontFamily: 'Inter, Arial, sans-serif', background: '#F5F5F5', margin: 0, padding: 0 }}>
         <Container style={{ maxWidth: '600px', margin: '0 auto', padding: '32px 16px' }}>
-          <Heading style={{ color: '#0c4a6e', fontSize: '22px', marginBottom: '8px' }}>
+          <Heading style={{ color: '#0D47A1', fontSize: '22px', marginBottom: '8px' }}>
             🦐 Bem-vindo ao Camarão Camarada!
           </Heading>
           <Text style={{ color: '#374151', fontSize: '15px' }}>
@@ -38,7 +38,7 @@ export function InviteEmail({ clientName, inviteUrl }: InviteEmailProps) {
           <Button
             href={inviteUrl}
             style={{
-              background: '#0284c7',
+              background: '#0D47A1',
               color: '#ffffff',
               padding: '12px 24px',
               borderRadius: '8px',

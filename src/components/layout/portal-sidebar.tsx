@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
@@ -26,8 +27,8 @@ export function PortalSidebar() {
   return (
     <aside className="w-64 bg-ocean-900 text-white flex flex-col h-full">
       <div className="p-6 border-b border-ocean-800">
-        <div className="text-xl font-bold">🦐 Camarão Camarada</div>
-        <div className="text-xs text-ocean-300 mt-1">Portal do Cliente</div>
+        <Image src="/logo-white.png" alt="Camarão Camarada" width={160} height={83} className="h-9 w-auto" priority />
+        <div className="text-xs text-ocean-300 mt-2">Portal do Cliente</div>
       </div>
 
       <nav className="flex-1 p-4 space-y-1">

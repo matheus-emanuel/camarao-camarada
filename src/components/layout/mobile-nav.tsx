@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
@@ -52,11 +53,14 @@ export function MobileNav({ role }: MobileNavProps) {
 
   return (
     <div className="relative z-40 flex flex-col">
-      <header className="relative bg-ocean-900 text-white px-4 py-3 flex items-center justify-between">
-        <div className="font-bold text-lg">🦐 Camarão Camarada</div>
+      <header className="relative bg-ocean-900 text-white px-4 py-3 flex items-center justify-between gap-3">
+        <Link href={role === 'lab_admin' ? '/admin/dashboard' : '/portal/dashboard'} className="flex items-center gap-2 min-w-0">
+          <Image src="/logo-icon-white.png" alt="Camarão Camarada" width={32} height={38} className="h-7 w-auto shrink-0" priority />
+          <span className="font-heading font-bold text-base truncate">Camarão Camarada</span>
+        </Link>
         <button
           onClick={() => setOpen(!open)}
-          className="p-2 rounded-lg hover:bg-ocean-800 transition-colors"
+          className="p-2 rounded-lg hover:bg-ocean-800 transition-colors shrink-0"
           aria-label="Menu"
         >
           {open ? <X className="h-5 w-5" aria-hidden="true" /> : <Menu className="h-5 w-5" aria-hidden="true" />}

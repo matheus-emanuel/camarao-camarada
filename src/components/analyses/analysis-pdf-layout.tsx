@@ -24,13 +24,19 @@ export function AnalysisPdfLayout({ analysis, pondName, farmName, clientName }: 
       }}
     >
       {/* Header */}
-      <div style={{ borderBottom: '3px solid #0284c7', paddingBottom: '16px', marginBottom: '24px' }}>
-        <h1 style={{ fontSize: '22px', fontWeight: 'bold', color: '#0c4a6e', margin: 0 }}>
-          🦐 Camarão Camarada
-        </h1>
-        <p style={{ fontSize: '13px', color: '#6b7280', margin: '4px 0 0' }}>
-          Relatório de Análise da Qualidade da Água
-        </p>
+      <div style={{ borderBottom: '3px solid #0D47A1', paddingBottom: '16px', marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+        {/* Plain <img> (not next/image): this element is captured via html2canvas
+            from the live DOM, so a same-origin eagerly-loaded <img> is the most
+            reliable option here. */}
+        <img src="/logo-icon.png" alt="" width={32} height={38} style={{ height: '32px', width: 'auto' }} />
+        <div>
+          <h1 style={{ fontSize: '20px', fontWeight: 'bold', color: '#0D47A1', margin: 0 }}>
+            Camarão Camarada
+          </h1>
+          <p style={{ fontSize: '13px', color: '#6b7280', margin: '4px 0 0' }}>
+            Relatório de Análise da Qualidade da Água
+          </p>
+        </div>
       </div>
 
       {/* Info grid */}
@@ -75,16 +81,16 @@ export function AnalysisPdfLayout({ analysis, pondName, farmName, clientName }: 
       )}
 
       {/* Results table */}
-      <h2 style={{ fontSize: '16px', fontWeight: 'bold', color: '#0c4a6e', marginBottom: '12px' }}>
+      <h2 style={{ fontSize: '16px', fontWeight: 'bold', color: '#0D47A1', marginBottom: '12px' }}>
         Resultados
       </h2>
       <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '12px' }}>
         <thead>
-          <tr style={{ background: '#f0f9ff' }}>
-            <th style={{ padding: '8px 12px', textAlign: 'left', borderBottom: '2px solid #bae6fd', color: '#0369a1' }}>Parâmetro</th>
-            <th style={{ padding: '8px 12px', textAlign: 'right', borderBottom: '2px solid #bae6fd', color: '#0369a1' }}>Valor</th>
-            <th style={{ padding: '8px 12px', textAlign: 'center', borderBottom: '2px solid #bae6fd', color: '#0369a1' }}>Referência</th>
-            <th style={{ padding: '8px 12px', textAlign: 'center', borderBottom: '2px solid #bae6fd', color: '#0369a1' }}>Status</th>
+          <tr style={{ background: '#EEF3FB' }}>
+            <th style={{ padding: '8px 12px', textAlign: 'left', borderBottom: '2px solid #B3CBEB', color: '#0D47A1' }}>Parâmetro</th>
+            <th style={{ padding: '8px 12px', textAlign: 'right', borderBottom: '2px solid #B3CBEB', color: '#0D47A1' }}>Valor</th>
+            <th style={{ padding: '8px 12px', textAlign: 'center', borderBottom: '2px solid #B3CBEB', color: '#0D47A1' }}>Referência</th>
+            <th style={{ padding: '8px 12px', textAlign: 'center', borderBottom: '2px solid #B3CBEB', color: '#0D47A1' }}>Status</th>
           </tr>
         </thead>
         <tbody>

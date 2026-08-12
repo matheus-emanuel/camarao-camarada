@@ -86,7 +86,7 @@ export function FarmForm({ clientId, defaultValues = {}, submitLabel = 'Salvar f
         />
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label htmlFor="city" className="block text-sm font-medium text-gray-700 mb-1">Cidade</label>
           <input
@@ -129,18 +129,18 @@ export function FarmForm({ clientId, defaultValues = {}, submitLabel = 'Salvar f
         <div className="bg-red-50 text-red-700 text-sm px-3 py-2 rounded-lg">{error}</div>
       )}
 
-      <div className="flex gap-3 pt-2">
+      <div className="flex flex-col sm:flex-row gap-3 pt-2">
         <button
           type="submit"
           disabled={loading}
-          className="px-6 py-2.5 bg-ocean-600 hover:bg-ocean-700 disabled:opacity-60 text-white text-sm font-medium rounded-lg transition-colors"
+          className="w-full sm:w-auto px-6 py-2.5 bg-ocean-600 hover:bg-ocean-700 disabled:opacity-60 text-white text-sm font-medium rounded-lg transition-colors"
         >
           {loading ? 'Salvando...' : submitLabel}
         </button>
         <button
           type="button"
           onClick={() => router.back()}
-          className="px-6 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-medium rounded-lg transition-colors"
+          className="w-full sm:w-auto px-6 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-medium rounded-lg transition-colors"
         >
           Cancelar
         </button>

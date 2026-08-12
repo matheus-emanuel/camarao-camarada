@@ -48,17 +48,26 @@ export default {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))',
         },
+        brand: {
+          DEFAULT: 'hsl(var(--brand))',
+          foreground: 'hsl(var(--brand-foreground))',
+          vivid: 'hsl(var(--brand-vivid))',
+        },
+        // Navy scale derived from the brand's Azul Principal (#0D47A1).
+        // ocean-600 === brand primary; kept as a literal scale (rather than
+        // migrating every usage to semantic tokens) since it's used ad-hoc
+        // across many pages for links, focus rings, borders and stat text.
         ocean: {
-          50: '#f0f9ff',
-          100: '#e0f2fe',
-          200: '#bae6fd',
-          300: '#7dd3fc',
-          400: '#38bdf8',
-          500: '#0ea5e9',
-          600: '#0284c7',
-          700: '#0369a1',
-          800: '#075985',
-          900: '#0c4a6e',
+          50: '#eef3fb',
+          100: '#d9e5f5',
+          200: '#b3cbeb',
+          300: '#82a9dd',
+          400: '#4c7fc7',
+          500: '#235fb0',
+          600: '#0d47a1',
+          700: '#0b3b85',
+          800: '#0a2f6b',
+          900: '#082450',
         },
         seagreen: {
           50: '#f0fdf4',
@@ -76,6 +85,7 @@ export default {
       },
       fontFamily: {
         sans: ['var(--font-inter)', 'system-ui', 'sans-serif'],
+        heading: ['var(--font-poppins)', 'var(--font-inter)', 'system-ui', 'sans-serif'],
       },
       fontSize: {
         stat: ['1.875rem', { lineHeight: '2.25rem', fontWeight: '700' }],

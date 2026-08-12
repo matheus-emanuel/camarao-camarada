@@ -44,18 +44,18 @@ export function ConfirmDialog({
           <div className="relative bg-white rounded-xl shadow-xl p-6 w-full max-w-md mx-4">
             <h2 className="text-lg font-semibold text-gray-900 mb-2">{title}</h2>
             <p className="text-sm text-gray-600 mb-6">{description}</p>
-            <div className="flex gap-3 justify-end">
+            <div className="flex flex-col-reverse sm:flex-row gap-3 sm:justify-end">
               <button
                 onClick={() => setOpen(false)}
                 disabled={loading}
-                className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors disabled:opacity-50"
+                className="w-full sm:w-auto px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors disabled:opacity-50"
               >
                 {cancelLabel}
               </button>
               <button
                 onClick={handleConfirm}
                 disabled={loading}
-                className={`px-4 py-2 text-sm font-medium text-white rounded-lg transition-colors disabled:opacity-50 ${
+                className={`w-full sm:w-auto px-4 py-2 text-sm font-medium text-white rounded-lg transition-colors disabled:opacity-50 ${
                   variant === 'danger'
                     ? 'bg-red-600 hover:bg-red-700'
                     : 'bg-ocean-600 hover:bg-ocean-700'

@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 
@@ -32,8 +33,10 @@ export default function LoginPage() {
     <div className="min-h-screen bg-ocean-50 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-ocean-900">🦐 Camarão Camarada</h1>
-          <p className="text-ocean-600 mt-2">Portal de Monitoramento da Qualidade da Água</p>
+          <h1>
+            <Image src="/logo.png" alt="Camarão Camarada" width={280} height={145} className="h-16 w-auto mx-auto" priority />
+          </h1>
+          <p className="text-ocean-600 mt-3">Portal de Monitoramento da Qualidade da Água</p>
         </div>
 
         <div className="bg-white rounded-xl shadow-lg p-8">

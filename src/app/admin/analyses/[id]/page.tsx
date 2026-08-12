@@ -60,7 +60,7 @@ export default async function AdminAnalysisDetailPage({ params }: { params: { id
           { label: 'Análise' },
         ]}
         actions={
-          <div className="flex gap-2 items-center">
+          <div className="flex flex-wrap gap-2 items-center">
             <AlertBadge hasAlerts={analysis.has_alerts} alertCount={alertCount} />
             <Link
               href={`/admin/analyses/${params.id}/edit`}

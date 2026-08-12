@@ -50,7 +50,7 @@ export default async function AdminPondPage({ params }: { params: { id: string }
         }
       />
 
-      <div className="grid grid-cols-3 gap-4 mb-6">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
         {[
           { label: 'Espécie', value: pond.species ?? '—' },
           { label: 'Sistema', value: pond.system_type ?? '—' },

@@ -4,13 +4,14 @@
 
 @layer base {
   :root {
-    --background: 210 40% 98%;
-    --foreground: 222.2 84% 4.9%;
+    /* Camarão Camarada brand tokens (see camarao_camarada_brand.md) */
+    --background: 0 0% 96%; /* #F5F5F5 */
+    --foreground: 0 0% 13%; /* #212121 */
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 0 0% 13%;
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 199 89% 48%;
+    --popover-foreground: 0 0% 13%;
+    --primary: 216 85% 34%; /* #0D47A1 */
     --primary-foreground: 0 0% 100%;
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 222.2 47.4% 11.2%;
@@ -22,8 +23,20 @@
     --destructive-foreground: 210 40% 98%;
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 199 89% 48%;
+    --ring: 216 85% 34%; /* matches --primary */
     --radius: 0.5rem;
+
+    /* Brand accent (Laranja #FF7043) — kept separate from shadcn's neutral
+       --accent (used for ghost/outline hover surfaces) so those aren't
+       accidentally tinted orange. --brand is a darkened, WCAG AA-safe
+       shade (~4.7:1 on white) usable as text/links/borders AND as a
+       button background with white text. --brand-vivid is the literal
+       brand hex, for large decorative surfaces only — always pair it
+       with dark (--foreground) text, never white, see contrast notes
+       in the rollout summary. */
+    --brand: 14 100% 43%;
+    --brand-foreground: 0 0% 100%;
+    --brand-vivid: 14 100% 63%; /* #FF7043 */
   }
 }
 
@@ -33,5 +46,8 @@
   }
   body {
     @apply bg-background text-foreground font-sans;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading;
   }
 }
