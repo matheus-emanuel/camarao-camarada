@@ -32,8 +32,9 @@ export default function PortalPondPage({ params }: { params: { id: string } }) {
           .single(),
         supabase
           .from('analyses')
-          .select('*, analysis_results(count).filter(is_alert.eq.true)')
+          .select('*, analysis_results(count)')
           .eq('pond_id', params.id)
+          .eq('analysis_results.is_alert', true)
           .order('collected_at', { ascending: false }),
       ])
 
@@ -85,7 +86,7 @@ export default function PortalPondPage({ params }: { params: { id: string } }) {
         .select('value, is_alert, analyses!inner(collected_at)')
         .eq('parameter_id', selectedParamId)
         .in('analysis_id', analysisIds)
-        .order('analyses.collected_at', { ascending: true })
+        .order('collected_at', { foreignTable: 'analyses', ascending: true })
 
       const points: ChartDataPoint[] = (results ?? [])
         .filter((r) => r.value !== null)

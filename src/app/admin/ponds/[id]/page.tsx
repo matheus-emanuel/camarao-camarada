@@ -15,8 +15,9 @@ export default async function AdminPondPage({ params }: { params: { id: string }
       .single(),
     supabase
       .from('analyses')
-      .select('*, alert_count:analysis_results(count).filter(is_alert.eq.true)')
+      .select('*, alert_count:analysis_results(count)')
       .eq('pond_id', params.id)
+      .eq('analysis_results.is_alert', true)
       .order('collected_at', { ascending: false }),
   ])
 
