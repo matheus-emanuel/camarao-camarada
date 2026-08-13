@@ -1,0 +1,10 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="501.838" height="181.873" viewBox="0 0 501.838 181.873" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="sparkline">
+<line id="spark-segment-0" x1="0.492727" y1="181.003" x2="83.4909" y2="134.006" stroke="#EA580C" stroke-width="2"/>
+<line id="spark-segment-1" x1="83.2135" y1="134.237" x2="167.186" y2="32.2617" stroke="#EA580C" stroke-width="2"/>
+<line id="spark-segment-2" x1="167.636" y1="31.9362" x2="250.636" y2="0.936794" stroke="#EA580C" stroke-width="2"/>
+<line id="spark-segment-3" x1="251.478" y1="1.00281" x2="334.476" y2="47.9991" stroke="#EA580C" stroke-width="2"/>
+<line id="spark-segment-4" x1="333.798" y1="47.8906" x2="417.799" y2="31.897" stroke="#EA580C" stroke-width="2"/>
+<line id="spark-segment-5" x1="418.411" y1="31.9679" x2="501.413" y2="70.9727" stroke="#EA580C" stroke-width="2"/>
+</g>
+</svg>
