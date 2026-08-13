@@ -29,7 +29,7 @@ export function AdminSidebar() {
   return (
     <aside className="w-64 bg-ocean-900 text-white flex flex-col h-full">
       <div className="p-6 border-b border-ocean-800">
-        <Image src="/logo-white.png" alt="Camarão Camarada" width={160} height={83} className="h-9 w-auto" priority />
+        <Image src="/logo-white.png" alt="Camarão Camarada" width={858} height={373} className="h-10 w-auto" priority />
         <div className="text-xs text-ocean-300 mt-2">Painel do Laboratório</div>
       </div>
 

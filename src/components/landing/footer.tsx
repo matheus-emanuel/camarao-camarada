@@ -14,7 +14,7 @@ export function LandingFooter() {
       <div className="max-w-[1400px] mx-auto flex flex-col gap-16">
         <div className="flex flex-col lg:flex-row gap-12 lg:gap-20 justify-between">
           <div className="flex flex-col gap-5 max-w-sm">
-            <Image src="/logo-white.png" alt="Camarão Camarada" width={168} height={92} className="h-11 w-auto self-start" />
+            <Image src="/logo-white.png" alt="Camarão Camarada" width={858} height={373} className="h-12 w-auto self-start" />
             <p className="text-slate-400 text-sm leading-relaxed">
               Portal que conecta laboratórios de análise de água a produtores de camarão — leve os
               resultados de cada análise, o histórico e os alertas para o celular do seu cliente.

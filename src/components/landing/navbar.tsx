@@ -14,7 +14,7 @@ export function LandingNavbar() {
     <header className="bg-white border-b border-gray-200 sticky top-0 z-40">
       <div className="max-w-[1400px] mx-auto flex items-center justify-between px-6 lg:px-20 h-20">
         <Link href="/" className="shrink-0">
-          <Image src="/logo.png" alt="Camarão Camarada" width={168} height={92} className="h-11 w-auto" priority />
+          <Image src="/logo.png" alt="Camarão Camarada" width={856} height={371} className="h-12 w-auto" priority />
         </Link>
 
         <nav className="hidden lg:flex items-center gap-8 text-[15px] font-medium text-slate-700">

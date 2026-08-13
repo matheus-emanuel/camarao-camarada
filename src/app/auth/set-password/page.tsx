@@ -43,7 +43,7 @@ export default function SetPasswordPage() {
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <h1>
-            <Image src="/logo.png" alt="Camarão Camarada" width={280} height={145} className="h-16 w-auto mx-auto" priority />
+            <Image src="/logo.png" alt="Camarão Camarada" width={856} height={371} className="h-20 w-auto mx-auto" priority />
           </h1>
           <p className="text-ocean-600 mt-3">Primeiro acesso — crie sua senha</p>
         </div>
