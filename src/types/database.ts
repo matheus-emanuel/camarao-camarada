@@ -32,6 +32,7 @@ export interface Database {
           user_id: string | null
           company_name: string | null
           document: string | null
+          document_digits: string | null
           address: string | null
           city: string | null
           state: string | null
@@ -150,6 +151,7 @@ export interface Database {
           active: boolean
           display_order: number
           created_at: string
+          created_by: string
         }
         Insert: {
           id?: string
@@ -163,6 +165,7 @@ export interface Database {
           active?: boolean
           display_order?: number
           created_at?: string
+          created_by?: string
         }
         Update: {
           id?: string
@@ -176,6 +179,7 @@ export interface Database {
           active?: boolean
           display_order?: number
           created_at?: string
+          created_by?: string
         }
       }
       analyses: {

@@ -27,6 +27,13 @@ export function formatArea(value: number | null, unit: 'ha' | 'm²'): string {
   return `${value.toLocaleString('pt-BR')} ${unit}`
 }
 
+export function formatReferenceRange(ref_min: number | null, ref_max: number | null, unit: string | null): string {
+  if (ref_min !== null && ref_max !== null) return `${ref_min} – ${ref_max}${unit ? ` ${unit}` : ''}`
+  if (ref_max !== null) return `≤ ${ref_max}${unit ? ` ${unit}` : ''}`
+  if (ref_min !== null) return `≥ ${ref_min}${unit ? ` ${unit}` : ''}`
+  return '—'
+}
+
 export function categoryLabel(category: string): string {
   const labels: Record<string, string> = {
     campo: 'Campo',

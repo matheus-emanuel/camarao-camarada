@@ -4,17 +4,15 @@ import { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { PageHeader } from '@/components/shared/page-header'
 import { PageSkeleton } from '@/components/shared/page-skeleton'
-import { AnalysisTable } from '@/components/analyses/analysis-table'
 import { ParameterChart } from '@/components/charts/parameter-chart'
+import { Badge } from '@/components/ui/badge'
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select'
+import { formatDate, formatValue, formatReferenceRange } from '@/lib/utils'
 import type { Analysis, Parameter, ChartDataPoint } from '@/types/app'
-
-interface AnalysisWithCount extends Analysis {
-  alert_count: number
-}
 
 export default function PortalPondPage({ params }: { params: { id: string } }) {
   const [pond, setPond] = useState<{ name: string; farms: { name: string } } | null>(null)
-  const [analyses, setAnalyses] = useState<AnalysisWithCount[]>([])
+  const [analyses, setAnalyses] = useState<Analysis[]>([])
   const [parameters, setParameters] = useState<Parameter[]>([])
   const [selectedParamId, setSelectedParamId] = useState('')
   const [chartData, setChartData] = useState<ChartDataPoint[]>([])
@@ -32,21 +30,13 @@ export default function PortalPondPage({ params }: { params: { id: string } }) {
           .single(),
         supabase
           .from('analyses')
-          .select('*, analysis_results(count)')
+          .select('*')
           .eq('pond_id', params.id)
-          .eq('analysis_results.is_alert', true)
           .order('collected_at', { ascending: false }),
       ])
 
       setPond(pondData as { name: string; farms: { name: string } })
-
-      const withCount = (analysesData ?? []).map((a) => ({
-        ...a,
-        alert_count: Array.isArray(a.analysis_results)
-          ? (a.analysis_results[0] as { count: number })?.count ?? 0
-          : 0,
-      }))
-      setAnalyses(withCount)
+      setAnalyses(analysesData ?? [])
 
       if (analysesData?.length) {
         const { data: params_ } = await supabase
@@ -56,7 +46,7 @@ export default function PortalPondPage({ params }: { params: { id: string } }) {
           .order('display_order')
         setParameters(params_ ?? [])
 
-        const mostRecentAnalysisId = withCount[0].id
+        const mostRecentAnalysisId = analysesData[0].id
         const { data: alerted } = await supabase
           .from('analysis_results')
           .select('parameter_id, parameters!inner(display_order)')
@@ -108,32 +98,41 @@ export default function PortalPondPage({ params }: { params: { id: string } }) {
 
   const selectedParam = parameters.find((p) => p.id === selectedParamId)
 
+  const referenceLabel = selectedParam
+    ? formatReferenceRange(selectedParam.ref_min, selectedParam.ref_max, selectedParam.unit)
+    : '—'
+
   return (
     <div>
       <PageHeader
         title={pond?.name ?? 'Viveiro'}
-        description={pond?.farms?.name}
+        description={pond?.farms?.name ? `${pond.farms.name} — Monitoramento individual de parâmetros` : undefined}
         breadcrumb={[
           { label: 'Fazendas', href: '/portal/farms' },
           { label: pond?.farms?.name ?? '', href: '' },
           { label: pond?.name ?? '' },
         ]}
+        actions={
+          parameters.length > 0 && (
+            <Select value={selectedParamId} onValueChange={setSelectedParamId}>
+              <SelectTrigger className="w-auto min-w-[200px] bg-white">
+                <SelectValue placeholder="Selecionar parâmetro" />
+              </SelectTrigger>
+              <SelectContent>
+                {parameters.map((p) => (
+                  <SelectItem key={p.id} value={p.id}>{p.name}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          )
+        }
       />
 
       {analyses.length > 0 && parameters.length > 0 && (
         <div className="bg-white rounded-xl border border-gray-200 p-5 mb-6">
-          <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-4">
-            <h2 className="text-sm font-semibold text-gray-600 uppercase tracking-wide">Evolução temporal</h2>
-            <select
-              value={selectedParamId}
-              onChange={(e) => setSelectedParamId(e.target.value)}
-              className="px-3 py-1.5 border border-gray-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-ocean-500"
-            >
-              {parameters.map((p) => (
-                <option key={p.id} value={p.id}>{p.name}</option>
-              ))}
-            </select>
-          </div>
+          <h2 className="text-sm font-semibold text-gray-600 uppercase tracking-wide mb-4">
+            Evolução temporal{selectedParam?.unit ? ` (${selectedParam.unit})` : ''}
+          </h2>
 
           {chartData.length === 0 ? (
             <p className="text-sm text-gray-400 text-center py-8">
@@ -154,12 +153,40 @@ export default function PortalPondPage({ params }: { params: { id: string } }) {
       <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
         <div className="px-5 py-4 border-b border-gray-100">
           <h2 className="text-sm font-semibold text-gray-600 uppercase tracking-wide">
-            Histórico de análises ({analyses.length})
+            Histórico de Análises — {selectedParam?.name ?? 'Parâmetro'}
           </h2>
         </div>
-        <div className="p-5">
-          <AnalysisTable analyses={analyses} basePath="/portal/analyses" />
-        </div>
+
+        {chartData.length === 0 ? (
+          <p className="text-sm text-gray-400 text-center py-10">Nenhum dado registrado para este parâmetro.</p>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead className="bg-gray-50">
+                <tr>
+                  <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Data</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Valor Medido</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Referência</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider w-[120px]">Status</th>
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-100">
+                {[...chartData].reverse().map((point, i) => (
+                  <tr key={i} className="hover:bg-gray-50">
+                    <td className="px-4 py-3 text-sm font-medium text-gray-800">{formatDate(point.collected_at)}</td>
+                    <td className="px-4 py-3 text-sm text-gray-600">{formatValue(point.value, selectedParam?.unit ?? null)}</td>
+                    <td className="px-4 py-3 text-sm text-gray-600">{referenceLabel}</td>
+                    <td className="px-4 py-3">
+                      <Badge variant={point.is_alert ? 'critical' : 'success'}>
+                        {point.is_alert ? 'ALERTA' : 'OK'}
+                      </Badge>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
     </div>
   )

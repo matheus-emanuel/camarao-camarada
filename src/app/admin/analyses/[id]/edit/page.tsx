@@ -5,6 +5,7 @@ import { AnalysisForm } from '@/components/analyses/analysis-form'
 
 export default async function EditAnalysisPage({ params }: { params: { id: string } }) {
   const supabase = createClient()
+  const { data: { user } } = await supabase.auth.getUser()
 
   const [{ data: analysis }, { data: ponds }, { data: parameters }] = await Promise.all([
     supabase
@@ -21,6 +22,7 @@ export default async function EditAnalysisPage({ params }: { params: { id: strin
       .from('parameters')
       .select('*')
       .eq('active', true)
+      .eq('created_by', user!.id)
       .order('display_order'),
   ])
 

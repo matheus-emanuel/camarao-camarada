@@ -30,3 +30,6 @@ next-env.d.ts
 
 # Editor
 .DS_Store
+
+# Supabase CLI
+supabase/.temp

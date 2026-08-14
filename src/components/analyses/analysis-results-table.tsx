@@ -1,5 +1,5 @@
 import { CheckCircle2, Lightbulb, TriangleAlert } from 'lucide-react'
-import { cn, formatValue, categoryLabel } from '@/lib/utils'
+import { cn, formatValue, formatReferenceRange, categoryLabel } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
 import { ParameterInfoToggle } from './parameter-info-toggle'
 import type { AnalysisResult, Parameter } from '@/types/app'
@@ -15,10 +15,7 @@ interface AnalysisResultsTableProps {
 const categoryOrder = ['campo', 'laboratorio', 'microbiologico', 'contaminantes']
 
 function refLabel({ ref_min, ref_max, unit }: Parameter) {
-  if (ref_min !== null && ref_max !== null) return `${ref_min} – ${ref_max}${unit ? ` ${unit}` : ''}`
-  if (ref_max !== null) return `≤ ${ref_max}${unit ? ` ${unit}` : ''}`
-  if (ref_min !== null) return `≥ ${ref_min}${unit ? ` ${unit}` : ''}`
-  return '—'
+  return formatReferenceRange(ref_min, ref_max, unit)
 }
 
 function StatusPill({ isAlert }: { isAlert: boolean }) {

@@ -1,14 +1,17 @@
 import { createClient } from '@/lib/supabase/server'
 import { PageHeader } from '@/components/shared/page-header'
 import { ParameterForm } from '@/components/parameters/parameter-form'
+import { ParameterActions } from '@/components/parameters/parameter-actions'
 import { Badge } from '@/components/ui/badge'
 import { categoryLabel } from '@/lib/utils'
 
 export default async function ParametersPage() {
   const supabase = createClient()
+  const { data: { user } } = await supabase.auth.getUser()
   const { data: parameters } = await supabase
     .from('parameters')
     .select('*')
+    .eq('created_by', user!.id)
     .order('display_order')
 
   const categories = ['campo', 'laboratorio', 'microbiologico', 'contaminantes'] as const
@@ -38,6 +41,7 @@ export default async function ParametersPage() {
                       <th className="px-4 py-2 text-center text-xs font-medium text-gray-500">Ref. Min</th>
                       <th className="px-4 py-2 text-center text-xs font-medium text-gray-500">Ref. Max</th>
                       <th className="px-4 py-2 text-center text-xs font-medium text-gray-500">Status</th>
+                      <th className="px-4 py-2"></th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-50">
@@ -49,6 +53,9 @@ export default async function ParametersPage() {
                         <td className="px-4 py-3 text-sm text-gray-600 text-center font-mono">{p.ref_max ?? '—'}</td>
                         <td className="px-4 py-3 text-center">
                           <Badge variant={p.active ? 'success' : 'outline'}>{p.active ? 'Ativo' : 'Inativo'}</Badge>
+                        </td>
+                        <td className="px-4 py-3">
+                          <ParameterActions id={p.id} name={p.name} active={p.active} />
                         </td>
                       </tr>
                     ))}

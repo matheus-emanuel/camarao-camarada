@@ -96,7 +96,7 @@ export function AnalysisCompare({ analyses }: AnalysisCompareProps) {
         <button
           onClick={handleCompare}
           disabled={loading}
-          className="px-6 py-2.5 bg-ocean-600 hover:bg-ocean-700 disabled:opacity-60 text-white text-sm font-medium rounded-lg transition-colors whitespace-nowrap"
+          className="px-8 py-3.5 bg-brand hover:bg-brand/90 disabled:opacity-60 text-brand-foreground text-sm font-semibold rounded-lg shadow-[0_4px_6px_rgba(255,112,67,0.15)] transition-colors whitespace-nowrap"
         >
           {loading ? 'Carregando...' : 'Comparar'}
         </button>
@@ -116,7 +116,7 @@ export function AnalysisCompare({ analyses }: AnalysisCompareProps) {
                 <th className="px-4 py-3 text-center text-xs font-semibold text-seagreen-700 uppercase">
                   B — {formatDate(rightData.collected_at, 'dd/MM/yyyy')}
                 </th>
-                <th className="px-4 py-3 text-center text-xs font-semibold text-gray-500 uppercase">Delta</th>
+                <th className="px-4 py-3 text-center text-xs font-semibold text-gray-500 uppercase">Δ Variação</th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-100">
@@ -125,11 +125,11 @@ export function AnalysisCompare({ analyses }: AnalysisCompareProps) {
                 const right = getResult(rightData, p.id)
                 const leftVal = left?.value ?? null
                 const rightVal = right?.value ?? null
-                const delta = leftVal !== null && rightVal !== null ? rightVal - leftVal : null
-                const deltaStr = delta !== null
-                  ? `${delta > 0 ? '+' : ''}${delta.toFixed(2)}`
-                  : '—'
-                const deltaColor = delta === null ? 'text-gray-400' : delta > 0 ? 'text-red-600' : delta < 0 ? 'text-green-600' : 'text-gray-500'
+                const deltaPct = leftVal !== null && rightVal !== null && leftVal !== 0
+                  ? ((rightVal - leftVal) / Math.abs(leftVal)) * 100
+                  : null
+                const deltaStr = deltaPct !== null ? `${deltaPct > 0 ? '+' : ''}${deltaPct.toFixed(0)}%` : '—'
+                const worse = right?.is_alert && !left?.is_alert
 
                 return (
                   <tr key={p.id} className="hover:bg-gray-50">
@@ -140,8 +140,19 @@ export function AnalysisCompare({ analyses }: AnalysisCompareProps) {
                     <td className={cn('px-4 py-3 text-sm text-center font-mono', right?.is_alert ? 'text-red-700 font-bold' : 'text-gray-700')}>
                       {rightVal !== null ? formatValue(rightVal, p.unit) : right?.value_text ?? '—'}
                     </td>
-                    <td className={cn('px-4 py-3 text-sm text-center font-mono', deltaColor)}>
-                      {deltaStr}
+                    <td className="px-4 py-3 text-center">
+                      {deltaPct !== null ? (
+                        <span
+                          className={cn(
+                            'inline-flex items-center px-3 py-1 rounded-full text-xs font-bold',
+                            right?.is_alert || worse ? 'bg-red-50 text-red-800' : 'bg-seagreen-50 text-seagreen-700'
+                          )}
+                        >
+                          {deltaStr}
+                        </span>
+                      ) : (
+                        <span className="text-sm text-gray-400">{deltaStr}</span>
+                      )}
                     </td>
                   </tr>
                 )

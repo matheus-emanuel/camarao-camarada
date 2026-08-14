@@ -37,7 +37,7 @@ export async function POST(request: NextRequest) {
 
   const { data: parameter, error } = await supabase
     .from('parameters')
-    .insert(parsed.data)
+    .insert({ ...parsed.data, created_by: user.id })
     .select()
     .single()
 
